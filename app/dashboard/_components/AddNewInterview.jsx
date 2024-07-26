@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { chatSession } from "@/utils/GeminiAi";
 import { LoaderCircle } from "lucide-react";
-// import { createInterview } from "@/app/actions/createInterview";
 import { useRouter } from "next/navigation";
 import { MockInterview } from "@/utils/schema";
 import { v4 as uuidv4 } from "uuid";
@@ -86,6 +85,7 @@ function AddNewInterview() {
         console.log("inserted id:", resp);
         if (resp) {
           setOpen(false);
+          router.push(`/dashboard/interview/${resp[0].mockId}`);
         }
       } else {
         console.log("Error");
