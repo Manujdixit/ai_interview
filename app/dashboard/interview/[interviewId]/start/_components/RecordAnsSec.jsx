@@ -3,15 +3,7 @@ import { db } from "@/utils/db";
 import { chatSession } from "@/utils/GeminiAi";
 import { UserAnswer } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
-import {
-  BrainCircuit,
-  Check,
-  Mic,
-  MicOff,
-  Ticket,
-  TicketX,
-  VideoOff,
-} from "lucide-react";
+import { BrainCircuit, Mic, MicOff, VideoOff } from "lucide-react";
 import moment from "moment";
 import React, { useEffect, useState, useCallback } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
@@ -22,7 +14,6 @@ function RecordAnsSec({
   mockinterviewquestion,
   activequestionindex,
   interviewdata,
-  onRecordingStateChange,
 }) {
   const [useranswer, setUseranswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,18 +36,39 @@ function RecordAnsSec({
   });
 
   useEffect(() => {
-    if (results.length > 0) {
-      const newAnswer = results.map((result) => result.transcript).join(" ");
-      setUseranswer((prev) => prev + " " + newAnswer);
-      setResults([]);
+    results.map((result) =>
+      setUseranswer((prevAns) => prevAns + result?.transcript)
+    );
+  }, [results]);
+
+  useEffect(() => {
+    console.log(
+      "useEffect triggered. isRecording:",
+      isRecording,
+      "useranser length:",
+      useranswer.length
+    );
+    if (!isRecording && useranswer.length > 1) {
+      UpdateUserAnswer();
+      // console.log("Calling UpdateUserAnswer from useEffect");
     }
-  }, [results, setResults]);
+  }, [useranswer, isRecording]);
+
+  const StartStopRecording = async () => {
+    if (isRecording) {
+      // console.log("Stopping speech to text");
+      stopSpeechToText();
+      // console.log("Speech to text stopped");
+    } else {
+      // console.log("Starting speech to text");
+      startSpeechToText();
+    }
+  };
 
   const UpdateUserAnswer = useCallback(async () => {
     if (useranswer.length <= 10) {
       toast("Response is too short. Pro Tip: Speak louder for best results.", {
-        icon: <BrainCircuit className="text-blue-500" />,
-        position: "top-center",
+        icon: <BrainCircuit />,
       });
       return;
     }
@@ -79,8 +91,6 @@ function RecordAnsSec({
         throw new Error("Failed to parse AI response");
       }
 
-      console.log(useranswer);
-
       const resp = await db.insert(UserAnswer).values({
         mockIdRef: interviewdata?.mockId,
         question: mockinterviewquestion[activequestionindex]?.question,
@@ -93,10 +103,7 @@ function RecordAnsSec({
       });
 
       if (resp) {
-        toast("Response saved successfully", {
-          icon: <Check className="text-green-500" />,
-          position: "top-center",
-        });
+        toast("Response saved successfully");
         setUseranswer("");
         setResults([]);
       } else {
@@ -104,11 +111,7 @@ function RecordAnsSec({
       }
     } catch (error) {
       console.error("Error in updateduseranswer", error);
-      toast.error("An error occurred while processing your answer", {
-        icon: <AlertCircle className="text-red-500" />,
-        position: "top-center",
-        duration: 5000,
-      });
+      toast.error("An error occurred while processing your answer");
     } finally {
       setLoading(false);
     }
@@ -119,24 +122,6 @@ function RecordAnsSec({
     interviewdata,
     user,
   ]);
-
-  useEffect(() => {
-    if (!isRecording && useranswer.length > 10) {
-      UpdateUserAnswer();
-    }
-  }, [isRecording, useranswer, UpdateUserAnswer]);
-
-  useEffect(() => {
-    onRecordingStateChange(isRecording);
-  }, [isRecording, onRecordingStateChange]);
-
-  const StartStopRecording = async () => {
-    if (isRecording) {
-      stopSpeechToText();
-    } else {
-      startSpeechToText();
-    }
-  };
 
   return (
     <div className="flex flex-col items-center justify-center">

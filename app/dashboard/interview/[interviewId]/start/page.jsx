@@ -13,7 +13,6 @@ function StartInterview({ params }) {
   const [interviewdata, setInterviewdata] = useState(null);
   const [mockinterviewquestion, setMockinterviewquestion] = useState(null);
   const [activequestionindex, setActivequestionindex] = useState(0);
-  const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
     GetInterviewDetails();
@@ -29,11 +28,6 @@ function StartInterview({ params }) {
     console.log(jsonMockResp);
     setMockinterviewquestion(jsonMockResp);
     setInterviewdata(result[0]);
-    console.log(result);
-  };
-
-  const handleRecordingStateChange = (recordingState) => {
-    setIsRecording(recordingState);
   };
 
   return (
@@ -47,14 +41,12 @@ function StartInterview({ params }) {
           mockinterviewquestion={mockinterviewquestion}
           activequestionindex={activequestionindex}
           interviewdata={interviewdata}
-          onRecordingStateChange={handleRecordingStateChange}
         />
       </div>
       <div className="flex justify-end gap-6">
         {activequestionindex > 0 && (
           <Button
             onClick={() => setActivequestionindex(activequestionindex - 1)}
-            disabled={isRecording}
           >
             Previous
           </Button>
@@ -62,14 +54,13 @@ function StartInterview({ params }) {
         {activequestionindex != mockinterviewquestion?.length - 1 && (
           <Button
             onClick={() => setActivequestionindex(activequestionindex + 1)}
-            disabled={isRecording}
           >
             Next
           </Button>
         )}
         {activequestionindex == mockinterviewquestion?.length - 1 && (
           <Link href={`/dashboard/interview/${interviewdata?.mockId}/feedback`}>
-            <Button disabled={isRecording}>End interview</Button>
+            <Button>End interview</Button>
           </Link>
         )}
       </div>
