@@ -45,12 +45,12 @@ function RecordAnsSec({
   });
 
   useEffect(() => {
-    const newAnswer = results.reduce(
-      (acc, result) => acc + result.transcript,
-      ""
-    );
-    setUseranswer((prev) => prev + newAnswer);
-  }, [results]);
+    if (results.length > 0) {
+      const newAnswer = results.map((result) => result.transcript).join(" ");
+      setUseranswer((prev) => prev + " " + newAnswer);
+      setResults([]);
+    }
+  }, [results, setResults]);
 
   const UpdateUserAnswer = useCallback(async () => {
     if (useranswer.length <= 10) {
@@ -78,6 +78,8 @@ function RecordAnsSec({
       if (!jsonfeedbackresponse) {
         throw new Error("Failed to parse AI response");
       }
+
+      console.log(useranswer);
 
       const resp = await db.insert(UserAnswer).values({
         mockIdRef: interviewdata?.mockId,
