@@ -1,6 +1,7 @@
 "use client";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -13,10 +14,12 @@ function Header() {
 
   return (
     <div className="flex py-4 px-4 sm:px-10 md:px-20 lg:px-32 items-center justify-between bg-secondary shadow-md">
-      <div className="flex items-center gap-3">
-        <Image src={"/logo.svg"} width={40} height={20} />
-        <h1 className="text-2xl text-blue-600 font-bold">Intervur</h1>
-      </div>
+      <Link href={"/dashboard"}>
+        <div className="flex items-center gap-3">
+          <Image src={"/logo.svg"} width={40} height={20} />
+          <h1 className="text-2xl text-blue-600 font-bold">Intervur</h1>
+        </div>
+      </Link>
       <ul className="hidden md:flex gap-6">
         {/* <li
           className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${
