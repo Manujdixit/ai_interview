@@ -12,20 +12,20 @@ function Header() {
   // }, [path]);
 
   return (
-    <div className="flex p-4 items-center justify-between bg-secondary shadow-md">
+    <div className="flex py-4 px-4 sm:px-10 md:px-20 lg:px-32 items-center justify-between bg-secondary shadow-md">
       <div className="flex items-center gap-3">
         <Image src={"/logo.svg"} width={40} height={20} />
         <h1 className="text-2xl text-blue-600 font-bold">Intervur</h1>
       </div>
       <ul className="hidden md:flex gap-6">
-        <li
+        {/* <li
           className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${
             path == "/dashboard" && "text-primary font-bold"
           }`}
         >
           Dashboard
-        </li>
-        <li
+        </li> */}
+        {/* <li
           className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${
             path == "/dashboard/questions" && "text-primary font-bold"
           }`}
@@ -45,7 +45,7 @@ function Header() {
           }`}
         >
           How it Works?
-        </li>
+        </li> */}
       </ul>
       <UserButton />
     </div>
