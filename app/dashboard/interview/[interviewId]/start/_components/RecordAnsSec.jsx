@@ -30,15 +30,17 @@ function RecordAnsSec({
     continuous: true,
     useLegacyResults: false,
     speechRecognitionProperties: { interimResults: true },
+    crossBrowser: true,
+    timeout: 10000,
     googleApiKey: null,
     googleCloudRecognitionConfig: null,
     engine: "browser",
   });
 
   useEffect(() => {
-    results.map((result) =>
-      setUseranswer((prevAns) => prevAns + result?.transcript)
-    );
+    if (results.length > 0) {
+      setUseranswer(results.map((result) => result.transcript).join(" "));
+    }
   }, [results]);
 
   useEffect(() => {
