@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { LucideSkull, Skull } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -7,9 +8,11 @@ export default function Home() {
       <Link href={"/dashboard"}>
         <Button>Go to dashboard</Button>
       </Link>
-      <h1 className="text-red-500">
-        Note- Works best on Chrome. No dark mode ahead!!
+      <h1 className="text-red-500 text-center">
+        Note- Please open it Chrome browser of your PC/ Laptop.
       </h1>
+      <h1 className="text-red-500 text-center">No Dark mode ahead</h1>
+      <Skull className="text-white" />
     </div>
   );
 }

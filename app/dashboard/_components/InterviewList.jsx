@@ -22,7 +22,7 @@ function InterviewList() {
       //   eq(MockInterview.createdBy, user?.primaryEmailAddress?.emailAddress)
       // )
       .orderBy(desc(MockInterview.id))
-      .limit(10);
+      .limit(8);
 
     console.log(result);
     setInterviewList(result);
