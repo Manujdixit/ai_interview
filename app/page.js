@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      hello<Button>Button</Button>
+      Go to dashboard
+      <Link href={"/dashboard"}>
+        <Button>Button</Button>
+      </Link>
     </>
   );
 }
