@@ -17,7 +17,7 @@ function Header() {
       <Link href={"/dashboard"}>
         <div className="flex items-center gap-3">
           <Image src={"/logo.svg"} width={40} height={20} />
-          <h1 className="text-2xl text-blue-600 font-bold">Intervur</h1>
+          <h1 className="text-2xl text-blue-600 font-bold">Assessment AI</h1>
         </div>
       </Link>
       <ul className="hidden md:flex gap-6">
